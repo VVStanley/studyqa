@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GalleryRequest;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller
 {
@@ -48,7 +49,9 @@ class GalleryController extends Controller
      */
     public function destroy($id)
     {
-        Gallery::find($id)->delete();
+        $image = Gallery::find($id);
+        Storage::delete(public_path('uploads/') . $image->image);
+        $image->delete();
         return redirect()->route('dashboard');
     }
 }
